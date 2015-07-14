@@ -13,3 +13,7 @@ hs_err_pid*
 
 # IDEA files
 .idea
+*.iml
+
+# Build files
+target
