@@ -1,8 +1,10 @@
 package com.artbeatte.launchpad.resources;
 
 import com.artbeatte.launchpad.core.Saying;
+import com.artbeatte.launchpad.core.User;
 import com.google.common.base.Optional;
 import com.codahale.metrics.annotation.Timed;
+import io.dropwizard.auth.Auth;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -30,7 +32,7 @@ public class HelloWorldResource {
 
     @GET
     @Timed
-    public Saying sayHello(@QueryParam("name") Optional<String> name) {
+    public Saying sayHello(@Auth User user, @QueryParam("name") Optional<String> name) {
         final String value = String.format(template, name.or(defaultName));
         return new Saying(counter.incrementAndGet(), value);
     }
