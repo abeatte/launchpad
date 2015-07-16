@@ -3,10 +3,6 @@ package com.artbeatte.launchpad.core;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.Length;
 
-/**
- * @author art.beatte
- * @version 7/14/15
- */
 public class Saying {
     private long id;
 

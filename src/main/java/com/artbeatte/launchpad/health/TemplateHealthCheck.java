@@ -1,24 +1,20 @@
 package com.artbeatte.launchpad.health;
 
+import com.artbeatte.launchpad.core.Template;
 import com.codahale.metrics.health.HealthCheck;
+import com.google.common.base.Optional;
 
-/**
- * @author art.beatte
- * @version 7/14/15
- */
 public class TemplateHealthCheck extends HealthCheck {
-    private final String template;
+    private final Template template;
 
-    public TemplateHealthCheck(String template) {
+    public TemplateHealthCheck(Template template) {
         this.template = template;
     }
 
     @Override
     protected Result check() throws Exception {
-        final String saying = String.format(template, "TEST");
-        if (!saying.contains("TEST")) {
-            return Result.unhealthy("template doesn't include a name");
-        }
+        template.render(Optional.of("woo"));
+        template.render(Optional.<String>absent());
         return Result.healthy();
     }
 }

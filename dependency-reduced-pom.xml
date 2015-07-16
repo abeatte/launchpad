@@ -62,6 +62,7 @@
     </plugins>
   </build>
   <properties>
+    <h2.version>1.4.185</h2.version>
     <dropwizard.version>0.8.2</dropwizard.version>
   </properties>
 </project>
