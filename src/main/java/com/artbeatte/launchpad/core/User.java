@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.security.Principal;
 
+/**
+ * @author art.beatte
+ * @version 7/14/15
+ */
 public class User implements Principal {
     private final String name;
     private final String password;
