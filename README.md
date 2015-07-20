@@ -13,3 +13,4 @@ A personal API.
 
 # References
 http://www.dropwizard.io/
+https://github.com/remmelt/dropwizard-oauth2-provider
