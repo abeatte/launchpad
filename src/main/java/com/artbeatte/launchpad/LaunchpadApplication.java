@@ -1,15 +1,13 @@
 package com.artbeatte.launchpad;
 
-import com.artbeatte.launchpad.authentication.ExampleAuthenticator;
+import com.artbeatte.launchpad.authentication.LaunchpadAuthenticator;
 import com.artbeatte.launchpad.core.Person;
 import com.artbeatte.launchpad.core.Template;
 import com.artbeatte.launchpad.core.User;
 import com.artbeatte.launchpad.db.PersonDAO;
+import com.artbeatte.launchpad.db.UserDAO;
 import com.artbeatte.launchpad.health.TemplateHealthCheck;
-import com.artbeatte.launchpad.resources.HelloWorldResource;
-import com.artbeatte.launchpad.resources.PeopleResource;
-import com.artbeatte.launchpad.resources.PersonResource;
-import com.artbeatte.launchpad.resources.ProtectedResource;
+import com.artbeatte.launchpad.resources.*;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.auth.AuthFactory;
@@ -32,7 +30,7 @@ public class LaunchpadApplication extends Application<LaunchpadConfiguration> {
     }
 
     private final HibernateBundle<LaunchpadConfiguration> hibernateBundle =
-            new HibernateBundle<LaunchpadConfiguration>(Person.class) {
+            new HibernateBundle<LaunchpadConfiguration>(Person.class, User.class) {
                 @Override
                 public DataSourceFactory getDataSourceFactory(LaunchpadConfiguration configuration) {
                     return configuration.getDataSourceFactory();
@@ -64,16 +62,18 @@ public class LaunchpadApplication extends Application<LaunchpadConfiguration> {
 
     @Override
     public void run(LaunchpadConfiguration configuration, Environment environment) {
-        final PersonDAO dao = new PersonDAO(hibernateBundle.getSessionFactory());
+        final PersonDAO personDAO = new PersonDAO(hibernateBundle.getSessionFactory());
+        final UserDAO userDAO = new UserDAO(hibernateBundle.getSessionFactory());
         final Template template = configuration.buildTemplate();
 
         environment.healthChecks().register("template", new TemplateHealthCheck(template));
 
         environment.jersey().register(AuthFactory.binder(
-                new BasicAuthFactory<>(new ExampleAuthenticator(), "SUPER SECRET STUFF", User.class)));
+                new BasicAuthFactory<>(new LaunchpadAuthenticator(userDAO), "Please Login:", User.class)));
         environment.jersey().register(new HelloWorldResource(template));
         environment.jersey().register(new ProtectedResource());
-        environment.jersey().register(new PeopleResource(dao));
-        environment.jersey().register(new PersonResource(dao));
+        environment.jersey().register(new PeopleResource(personDAO));
+        environment.jersey().register(new PersonResource(personDAO));
+        environment.jersey().register(new UserResource(userDAO));
     }
 }

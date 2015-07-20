@@ -20,7 +20,8 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="fullName" type="varchar(255)"/>
+            <column name="userId"   type="varchar(255)"/>
+            <column name="userName" type="varchar(255)"/>
             <column name="password" type="varchar(255)"/>
         </createTable>
     </changeSet>
