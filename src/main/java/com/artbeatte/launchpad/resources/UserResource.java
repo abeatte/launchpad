@@ -14,18 +14,21 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * @author art.beatte
+ * @version 7/20/15
+ */
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
 public class UserResource {
     private final UserDAO userDAO;
-    private final AtomicLong counter;
 
     public UserResource(UserDAO userDAO) {
         this.userDAO = userDAO;
-        this.counter = new AtomicLong();
     }
 
     @GET
+    @Timed(name = "get-requests")
     @UnitOfWork
     @Path("{userId}/user_info")
     public User getUserInfo(@Auth User user, @PathParam("userId") LongParam userId) {
@@ -40,12 +43,14 @@ public class UserResource {
     }
 
     @GET
+    @Timed(name = "get-requests")
     @UnitOfWork
     public List<User> listUsers() { // TODO: lock with @Auth later
         return userDAO.findAll();
     }
 
     @GET
+    @Timed(name = "get-requests")
     @UnitOfWork
     @Path("userId")
     public User getUser(@Auth User user, @PathParam("userId") LongParam userId) {

@@ -5,6 +5,7 @@ import org.hibernate.id.GUIDGenerator;
 
 import javax.persistence.*;
 import java.security.Principal;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -58,5 +59,17 @@ public class User implements Principal {
 
     public long getId() {
         return this.id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof User)) return false;
+
+        final User that = (User) obj;
+        return Objects.equals(this.id, that.id) &&
+                Objects.equals(this.userId, that.userId) &&
+                Objects.equals(this.name, that.name) &&
+                Objects.equals(this.password, that.password);
     }
 }
