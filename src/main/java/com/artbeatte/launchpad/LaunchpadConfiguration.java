@@ -1,5 +1,6 @@
 package com.artbeatte.launchpad;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import io.dropwizard.Configuration;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,6 +22,14 @@ public class LaunchpadConfiguration extends Configuration {
 
     @NotNull
     private Map<String, Map<String, String>> viewRendererConfiguration = Collections.emptyMap();
+
+    @Valid
+    @JsonProperty
+    private ImmutableList<String> allowedGrantTypes;
+
+    @Valid
+    @JsonProperty
+    private String bearerRealm;
 
     @JsonProperty("database")
     public DataSourceFactory getDataSourceFactory() {
